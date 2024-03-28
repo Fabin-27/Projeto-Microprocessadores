@@ -2,6 +2,10 @@ package application;
 
 import java.util.Scanner;
 
+import entitites.Calculo_decimal;
+import entitites.Calculo_hexadecimal;
+import entitites.Calculo_octal;
+
 public class Program {
 
 	public static void main(String[] args) {
@@ -11,107 +15,50 @@ public class Program {
 		System.out.println("digite os numeros binarios separados por espaço:");
 
 		String input = sc.nextLine();
-		
+
 		if (!input.matches("[01\\s]+")) {
 			System.out.println("numero Binario invalido");
 			return;
 		}
 
 		String[] binaryStrings = input.split(" ");
-		
-
-		// DECIMAL
  
+		// DECIMAL
+
+		Calculo_decimal cd = new Calculo_decimal();
+		
 		System.out.println("os numeros em decimal são: ");
 
 		for (String binaryString : binaryStrings) {
-			int decimal = binaryToDecimal(binaryString);
+			int decimal = cd.binaryToDecimal(binaryString);
 			System.out.println(binaryString + "--> " + decimal);
 		}
 
 		// HEXADECIMAL
+		
+		Calculo_hexadecimal ch = new Calculo_hexadecimal();
 
 		System.out.println("\nos numeros em hexadecimal são: ");
 
 		for (String binaryString : binaryStrings) {
-			String hexadecimal = binaryToHexadecimal(binaryString);
+			String hexadecimal = ch.binaryToHexadecimal(binaryString);
 			System.out.println(binaryString + "--> " + hexadecimal);
 		}
 
 		// OCTAL
+		
+		Calculo_octal co = new Calculo_octal();
 
 		System.out.println("\nos numeros em octal são: ");
 
 		for (String binaryString : binaryStrings) {
-			String octal = binaryToOctal(binaryString);
+			String octal = co.binaryToOctal(binaryString);
 			System.out.println(binaryString + "--> " + octal);
 		}
 
 		sc.close();
 	}
 
-	public static int binaryToDecimal(String binaryString) {
-
-		int decimal = 0;
-		int potencia = 0;
-		for (int i = binaryString.length() - 1; i >= 0; i--) {
-			int digit = binaryString.charAt(i) - '0';
-			decimal += digit * Math.pow(2, potencia);
-			potencia++;
-		}
-		return decimal;
-	}
-
-	public static String binaryToHexadecimal(String binaryString) {
-
-		if (!isValidBinary(binaryString)) {
-			return "numero Binario invalido";
-		}
-
-		while (binaryString.length() % 4 != 0) {
-			binaryString = "0" + binaryString;
-		}
-
-		StringBuilder hexadecimal = new StringBuilder();
-		for (int i = 0; i < binaryString.length(); i += 4) {
-			String nibble = binaryString.substring(i, i + 4);
-			int decimalValue = Integer.parseInt(nibble, 2);
-			String hexDigit = Integer.toHexString(decimalValue).toUpperCase();
-			hexadecimal.append(hexDigit);
-		}
-		return hexadecimal.toString();
-
-	}
-
-	public static boolean isValidBinary(String binaryString) {
-		for (int i = 0; i < binaryString.length(); i++) {
-			char digit = binaryString.charAt(i);
-			if (digit != '0' && digit != '1') {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public static String binaryToOctal(String binaryString) {
-
-		if (!isValidBinary(binaryString)) {
-			return "numero Binario invalido";
-		}
-
-		while (binaryString.length() % 3 != 0) {
-			binaryString = "0" + binaryString;
-		}
-
-		StringBuilder octal = new StringBuilder();
-		for (int i = 0; i < binaryString.length(); i += 3) {
-			String group = binaryString.substring(i, i + 3);
-			int decimalValue = Integer.parseInt(group, 2);
-			String octalDigit = Integer.toOctalString(decimalValue);
-			octal.append(octalDigit);
-		}
-		return octal.toString();
-
-	}
+	
 
 }
